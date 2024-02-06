@@ -1,0 +1,17 @@
+#environment variable
+.env
+
+
+*.txt
+
+# node_modules
+/node_modules
+
+#serverless
+/.serverless
+
+#uploads.
+/uploads
+
+#serverlessyml
+serverless.yml
