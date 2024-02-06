@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isProduction = void 0;
 require("dotenv/config");
 const { env: enviroment } = process;
-const unsanitizedEnv = {
+const getConfig = () => ({
     AWS_ACCESS_SECRET_KEY: enviroment.AWS_ACCESS_SECRET_KEY,
     AWS_ACCESS_KEY_ID: enviroment.AWS_ACCESS_KEY_ID,
     AWS_BUCKET_REGION: enviroment.AWS_BUCKET_REGION,
@@ -14,8 +14,8 @@ const unsanitizedEnv = {
     NODE_ENV: enviroment.NODE_ENV ?? 'production',
     VIDEO_PRESET_ID: enviroment.VIDEO_PRESET_ID,
     AUDIO_PRESET_ID: enviroment.AUDIO_PRESET_ID,
-};
-const sanitizeConfig = (config = unsanitizedEnv) => {
+});
+const sanitizeConfig = (config = getConfig()) => {
     Object.entries(config).forEach(([key, value]) => {
         if (!value) {
             throw new Error(`${key} is missing from .env file`);

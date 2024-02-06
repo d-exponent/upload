@@ -79,36 +79,16 @@ exports.uploadProfilePicture = (0, catchAsync_1.default)(async ({ params, file, 
 });
 exports.uploadEventVideosORAudio = (0, catchAsync_1.default)(async (req, res, next) => {
     const files = req.files;
-    // const { mediaTypes } = req.body // We could just pass this as a query parameter. Much Cleaner for the frontend
-    // const allowedMediaTypes = ['video', 'audio']
     if (!files) {
         return next(new ApiError_1.ApiError(http_status_1.BAD_REQUEST, 'Upload at least one file'));
     }
-    // if (!allowedMediaTypes.includes(mediaTypes)) {
-    //   return next(new ApiError(BAD_REQUEST, 'media types is not specified!'))
-    // }
-    // let data
-    // if (mediaTypes === 'video') {
-    //   if (!files.every((file: Express.Multer.File) => extractMimetype(file) === 'video')) {
-    //     return next(new ApiError(BAD_REQUEST, 'Some files are not videos'))
-    //   }
-    //   const videoData = await uploadMediaToS3(req.s3, files, 'videos')
-    //   data = await createJob(videoData, 'video')
-    // }
-    // if (mediaTypes === 'audio') {
-    //   if (!files.every((file: Express.Multer.File) => extractMimetype(file) === 'audio')) {
-    //     return next(new ApiError(BAD_REQUEST, 'Some files are not audios'))
-    //   }
-    //   const audioData = await uploadMediaToS3(req.s3, files, 'audio')
-    //   data = await createJob(audioData, 'audio')
-    // }
     const pathsToDelete = [];
     res.status(http_status_1.OK).json({
         error: false,
         message: 'success',
         data: await (0, handler_1.default)(req.s3, files, pathsToDelete),
     });
-    Promise.allSettled(pathsToDelete.map(path => (0, rimraf_1.rimraf)(path))).then(console.log).catch(console.error);
+    Promise.allSettled(pathsToDelete.map(path => (0, rimraf_1.rimraf)(path))).catch(console.error);
 });
 ///////
 // export const uploadMedia = catchAsync(

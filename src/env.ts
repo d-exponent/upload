@@ -15,7 +15,21 @@ type SanitizedConfig = {
   VIDEO_PRESET_ID: string
 }
 
-const unsanitizedEnv = {
+type Env = {
+  AWS_ACCESS_SECRET_KEY: string  | undefined
+  AWS_ACCESS_KEY_ID: string | undefined
+  AWS_BUCKET_REGION: string | undefined
+  DB_URL: string | undefined
+  AWS_INPUT_BUCKET: string | undefined
+  AWS_OUTPUT_BUCKET: string | undefined
+  PORT: number | undefined
+  NODE_ENV: string | undefined
+  AUDIO_PRESET_ID: string | undefined
+  VIDEO_PRESET_ID: string | undefined
+}
+
+
+const getConfig = (): Env => ({
   AWS_ACCESS_SECRET_KEY: enviroment.AWS_ACCESS_SECRET_KEY,
   AWS_ACCESS_KEY_ID: enviroment.AWS_ACCESS_KEY_ID,
   AWS_BUCKET_REGION: enviroment.AWS_BUCKET_REGION,
@@ -26,9 +40,9 @@ const unsanitizedEnv = {
   NODE_ENV: enviroment.NODE_ENV ?? 'production',
   VIDEO_PRESET_ID: enviroment.VIDEO_PRESET_ID,
   AUDIO_PRESET_ID: enviroment.AUDIO_PRESET_ID,
-}
+})
 
-const sanitizeConfig = (config: typeof unsanitizedEnv = unsanitizedEnv) => {
+const sanitizeConfig = (config: Env = getConfig()) => {
   Object.entries(config).forEach(([key, value]) => {
     if (!value) {
       throw new Error(`${key} is missing from .env file`)
